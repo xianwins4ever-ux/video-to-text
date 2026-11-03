@@ -207,10 +207,20 @@ def fetch_bilibili_subtitle(url: str, prefer_lang: str = "zh") -> dict:
     if not surl:
         return {"ok": False, "reason": "字幕轨没有 URL", **meta}
 
-    try:
-        body = json.loads(_text(op, surl))
-    except Exception as e:
-        return {"ok": False, "reason": f"下载字幕失败: {e}", **meta}
+    # 字幕 CDN（aisubtitle.hdslb.com）偶发断连，实测约 1/4 概率报
+    # "Remote end closed connection without response"，重试即可。
+    last_err = None
+    body = None
+    for attempt in range(3):
+        try:
+            body = json.loads(_text(op, surl))
+            break
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+            if attempt < 2:
+                time.sleep(0.6 * (attempt + 1))
+    if body is None:
+        return {"ok": False, "reason": f"下载字幕失败: {last_err}", **meta}
 
     cues = [
         {"from": ln.get("from"), "to": ln.get("to"),
