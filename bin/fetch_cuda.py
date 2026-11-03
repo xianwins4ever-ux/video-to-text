@@ -8,7 +8,10 @@ import sys
 import time
 import urllib.request
 
-WHEEL_DIR = r"D:\tools\v2t\wheels"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+WHEEL_DIR = str(paths.WHEELS)
 
 WHEELS = {
     "cublas": "https://mirrors.aliyun.com/pypi/packages/20/e2/fc9a0e985249d873150276d5afb02e39a66817fedbf1a385724393e505ed/nvidia_cublas_cu12-12.9.2.10-py3-none-win_amd64.whl",

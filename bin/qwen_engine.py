@@ -38,12 +38,15 @@ import sys
 import wave
 from pathlib import Path
 
-TOOLS = Path(r"D:\tools\v2t")
-FFMPEG_DIR = Path(r"D:\hyperframes-tools\ffmpeg")
-FFMPEG = FFMPEG_DIR / "ffmpeg.exe"
-DEFAULT_MODEL = TOOLS / "models" / "Qwen3-ASR-1.7B"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
 
-os.environ.setdefault("HF_HOME", str(TOOLS / "models"))
+TOOLS = paths.HOME
+FFMPEG_DIR = paths.FFMPEG_DIR
+FFMPEG = Path(paths.ffmpeg_exe())
+DEFAULT_MODEL = paths.MODELS / "Qwen3-ASR-1.7B"
+
+os.environ.setdefault("HF_HOME", str(paths.MODELS))
 
 # 强制 UTF-8 输出。Windows 下若没有控制台（pythonw）或未设 PYTHONIOENCODING，
 # Python 会按系统 GBK 写 stdout，父进程按 utf-8 读就会得到乱码/丢字。

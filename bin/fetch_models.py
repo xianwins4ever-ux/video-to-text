@@ -8,7 +8,10 @@ import os
 import sys
 import time
 
-MODELS_ROOT = r"D:\tools\v2t\models"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+MODELS_ROOT = str(paths.MODELS)
 
 # 必须在 import faster_whisper 之前设置
 os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")

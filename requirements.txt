@@ -1,0 +1,29 @@
+# 依赖说明
+#
+# 本项目分两部分依赖：
+#   A. 主程序（字幕抓取 / yt-dlp / UI）—— 见下方 requirements.txt 等价清单
+#   B. ASR 引擎（无字幕时才用）—— 独立 venv，依赖重（torch），单独装
+#
+# 本项目不通过 pip install -e . 安装，而是「解压即用」：
+# 依赖放在项目内的 pylib/ 与 venv_qwen/，不污染系统 Python。
+
+# ---------- A. 主程序依赖 ----------
+yt-dlp>=2025.1.1
+opencc-python-reimplemented>=0.1.7
+
+# 可选：浏览器嗅探通道（抖音/快手/小红书）
+# 不装则这几个站点不可用，其他功能不受影响
+# playwright>=1.40
+
+# ---------- B. ASR 引擎依赖（装进 venv_qwen） ----------
+# Qwen3-ASR 需要 transformers + torch，体积大（约 5GB），
+# 仅在视频没有平台字幕时才用到。
+#
+#   python -m venv venv_qwen
+#   venv_qwen\Scripts\pip install torch --index-url https://download.pytorch.org/whl/cu126
+#   venv_qwen\Scripts\pip install transformers accelerate soundfile numpy
+#
+# 或改用 faster-whisper（轻很多，中文略弱）：
+#   pip install faster-whisper
+#
+# 详见 README「安装」章节。

@@ -1,5 +1,5 @@
 # 从 hf-mirror.com 下载 faster-whisper 模型（走传统 resolve 路径 + curl 断点续传）
-# 用法: .\fetch_model.ps1 -Repo Systran/faster-whisper-large-v3 -Dest D:\tools\v2t\models\faster-whisper-large-v3
+# 用法: .\fetch_model.ps1 -Repo Systran/faster-whisper-large-v3 -Dest <v2t目录>\models\faster-whisper-large-v3
 param(
     [Parameter(Mandatory = $true)][string]$Repo,
     [Parameter(Mandatory = $true)][string]$Dest,

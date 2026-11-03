@@ -31,49 +31,19 @@ import wave
 from pathlib import Path
 
 # ---------------------------------------------------------------- 环境
-# 路径自适应：优先环境变量，其次按脚本位置推导，最后才用旧默认值。
-# 这样别人 clone 下来解压到任意目录都能跑，不依赖作者机器的路径。
-def _detect_tools() -> Path:
-    env = os.environ.get("V2T_HOME")
-    if env:
-        return Path(env).expanduser().resolve()
-    # bin/v2t.py -> 上一级即工具根目录
-    return Path(__file__).resolve().parent.parent
+# 路径统一由 paths.py 解析（环境变量 > 脚本位置推导 > 常见位置），
+# 这里只做别名，避免各脚本各写一套探测逻辑。
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
 
+TOOLS = paths.HOME
+PYLIB = paths.PYLIB
+MODELS = paths.MODELS
+FFMPEG_DIR = paths.FFMPEG_DIR or Path(".")
+FFMPEG = Path(paths.ffmpeg_exe())
+FFPROBE = Path(paths.ffprobe_exe())
 
-def _detect_ffmpeg_dir() -> Path:
-    """找 ffmpeg 所在目录：环境变量 > PATH > 工具目录内 > 常见安装位置。"""
-    env = os.environ.get("V2T_FFMPEG_DIR") or os.environ.get("FFMPEG_DIR")
-    if env and (Path(env) / "ffmpeg.exe").exists():
-        return Path(env).resolve()
-    if env and (Path(env) / "ffmpeg").exists():
-        return Path(env).resolve()
-
-    exe = shutil.which("ffmpeg")
-    if exe:
-        return Path(exe).resolve().parent
-
-    for cand in (
-        Path(__file__).resolve().parent.parent / "ffmpeg",
-        Path(r"D:\hyperframes-tools\ffmpeg"),
-        Path(r"C:\ffmpeg\bin"),
-        Path("/usr/bin"),
-        Path("/usr/local/bin"),
-        Path("/opt/homebrew/bin"),
-    ):
-        if (cand / "ffmpeg.exe").exists() or (cand / "ffmpeg").exists():
-            return cand
-    return Path(".")
-
-
-TOOLS = _detect_tools()
-PYLIB = TOOLS / "pylib"
-MODELS = TOOLS / "models"
-FFMPEG_DIR = _detect_ffmpeg_dir()
-FFMPEG = FFMPEG_DIR / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg")
-FFPROBE = FFMPEG_DIR / ("ffprobe.exe" if os.name == "nt" else "ffprobe")
-
-if PYLIB.is_dir():
+if PYLIB.is_dir() and str(PYLIB) not in sys.path:
     sys.path.insert(0, str(PYLIB))
 
 # 浏览器嗅探通道（抖音/快手/小红书）。可选依赖：playwright 缺失时自动降级为不可用，

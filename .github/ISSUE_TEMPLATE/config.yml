@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 使用文档
+    url: https://github.com/xianwins4ever-ux/video-to-text#readme
+    about: 安装、B站登录、平台支持范围，先看这里
+  - name: 💬 提问与讨论
+    url: https://github.com/xianwins4ever-ux/video-to-text/discussions
+    about: 不确定是不是 bug、想聊聊用法，来这里

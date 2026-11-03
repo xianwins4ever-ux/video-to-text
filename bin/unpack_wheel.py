@@ -3,8 +3,11 @@ import os
 import sys
 import zipfile
 
-WHEEL_DIR = r"D:\tools\v2t\wheels"
-PYLIB = r"D:\tools\v2t\pylib"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+WHEEL_DIR = str(paths.WHEELS)
+PYLIB = str(paths.PYLIB)
 
 
 def extract(wheel: str) -> list[str]:

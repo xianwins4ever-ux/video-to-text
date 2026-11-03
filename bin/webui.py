@@ -34,8 +34,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from urllib.parse import parse_qs, urlparse
 
-TOOLS = Path(r"D:\tools\v2t")
-DATA = TOOLS / "data"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+TOOLS = paths.HOME
+DATA = paths.DATA
 DATA.mkdir(parents=True, exist_ok=True)
 UPLOAD_DIR = DATA / "uploads"
 

@@ -13,7 +13,10 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-OUT = Path(r"D:\tools\v2t\assets")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+OUT = paths.ASSETS
 OUT.mkdir(parents=True, exist_ok=True)
 
 BG = (13, 17, 23, 255)

@@ -1,0 +1,20 @@
+* text=auto
+
+# Windows 项目的 CRLF 归一：仓库内统一 LF，检出时按平台
+*.py   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.ps1  text eol=crlf
+*.cmd  text eol=crlf
+*.bat  text eol=crlf
+
+# 二进制
+*.ico  binary
+*.png  binary
+*.jpg  binary
+*.zip  binary
+*.mp3  binary
+*.mp4  binary
+*.wav  binary

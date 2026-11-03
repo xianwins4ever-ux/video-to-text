@@ -34,9 +34,12 @@ import time
 import sys
 from pathlib import Path
 
-TOOLS = Path(r"D:\tools\v2t")
-FFMPEG_DIR = Path(r"D:\hyperframes-tools\ffmpeg")
-FFMPEG = FFMPEG_DIR / "ffmpeg.exe"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+TOOLS = paths.HOME
+FFMPEG_DIR = paths.FFMPEG_DIR
+FFMPEG = Path(paths.ffmpeg_exe())
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0")

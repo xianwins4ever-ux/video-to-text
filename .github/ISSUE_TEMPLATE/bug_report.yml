@@ -1,0 +1,86 @@
+name: 🐛 Bug 报告
+description: 转写失败、结果不对、程序报错
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量填全下面的信息 —— 视频转写的问题**九成是因为环境或登录态**，
+        没有这些信息很难定位。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 你期望的结果 vs 实际结果
+      placeholder: |
+        期望：拿到 B站官方字幕，术语正确
+        实际：走了 ASR，"agent" 被识别成 "A进"
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 出问题的视频链接
+      description: 能公开的话请提供，否则说明平台和视频类型
+      placeholder: https://www.bilibili.com/video/BVxxxxxxx
+    validations:
+      required: false
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台
+      options:
+        - B站
+        - YouTube
+        - 抖音 / 快手 / 小红书
+        - 本地文件
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: bili-status
+    attributes:
+      label: B站登录状态
+      description: 运行 `v2t status` 的输出。这是 B站相关问题的第一排查点
+      placeholder: "✓ 已登录：xxx  有效期剩余：180.0 天"
+    validations:
+      required: false
+
+  - type: textarea
+    id: log
+    attributes:
+      label: 完整日志
+      description: 命令行请粘贴终端输出；WebUI 请贴日志区内容（可点「打开目录」找 webui.log）
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: 运行 `python bin/paths.py` 和 `v2t status` 的输出
+      placeholder: |
+        操作系统：Windows 11
+        Python：3.14.6
+        GPU：RTX 4070 Laptop
+        paths.py 输出：...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 自查
+      options:
+        - label: 我已运行 `v2t status`，确认登录态
+          required: false
+        - label: 我已尝试用最新版本 + 关闭浏览器后重试
+          required: false
+        - label: 我已搜索过已有 issue，确认不是重复
+          required: true

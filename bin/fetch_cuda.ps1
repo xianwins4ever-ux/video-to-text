@@ -2,7 +2,7 @@
 # 用法: .\fetch_cuda.ps1
 $ErrorActionPreference = 'Continue'
 $ProgressPreference = 'SilentlyContinue'
-$dir = 'D:\tools\v2t\wheels'
+$dir = Join-Path (Split-Path -Parent $PSScriptRoot) 'wheels'
 New-Item -ItemType Directory -Force -Path $dir | Out-Null
 
 $wheels = @(
