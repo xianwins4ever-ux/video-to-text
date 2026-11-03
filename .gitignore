@@ -1,0 +1,20 @@
+# 模型与依赖（体积大，不入库；用 fetch_model.ps1 / fetch_cuda.py 重建）
+models/
+venv_qwen/
+pylib/
+wheels/
+
+# 运行时产物
+data/
+out/
+视频文案提取/
+
+# 缓存
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# 用户产物
+*.md.bak
+~$*
