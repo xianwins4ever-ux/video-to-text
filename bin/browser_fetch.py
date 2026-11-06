@@ -209,6 +209,34 @@ def _fetch_once(url: str, workdir: Path, *, headed: bool,
                 page.wait_for_timeout(6000)
                 title, author, dur_ms, direct = _parse_meta(details)
 
+            # 非抖音平台（快手/小红书/B站等）没有 aweme detail JSON，
+            # 标题要另外从页面取，否则会全变成 "video"，用户无法判断内容。
+            if not title:
+                try:
+                    title = page.evaluate("""() => {
+                        const og = document.querySelector('meta[property="og:title"]');
+                        if (og && og.content && og.content.trim()) return og.content.trim();
+                        let t = (document.title || '').trim();
+                        // 去掉平台后缀，如「xxx - 快手」「xxx_哔哩哔哩_bilibili」
+                        t = t.replace(/\\s*[-_|]\\s*(快手|抖音|小红书|哔哩哔哩|bilibili|B站).*$/i, '');
+                        return t.trim();
+                    }""")
+                    if title:
+                        _log(f"从页面取到标题：{title[:40]}")
+                except Exception:  # noqa: BLE001
+                    pass
+
+            if not author:
+                try:
+                    author = page.evaluate("""() => {
+                        const og = document.querySelector('meta[property="og:site_name"]');
+                        // 快手等页面常有作者链接
+                        const a = document.querySelector('[class*="author"] a, [class*="user"] a');
+                        return (a && a.textContent || '').trim().slice(0, 40);
+                    }""")
+                except Exception:  # noqa: BLE001
+                    pass
+
             if not direct and media:
                 media.sort(key=lambda x: x[1], reverse=True)
                 direct = media[0][0]
